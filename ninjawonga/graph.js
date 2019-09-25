@@ -19,3 +19,17 @@ const graph = svg.append('g')
 const pie = d3.pie()
   .sort(null)
   .value(d => d.cost)
+
+const arcPath = d3.arc()
+  .outerRadius(dims.radius)
+  .innerRadius(dims.radius / 2)
+
+db.collection('expenses').onSnapshot(res => {
+
+  res.docChanges().forEach(change => {
+
+    const doc = { ...change.doc.data(), id: change.doc.id }
+
+  })
+
+})
