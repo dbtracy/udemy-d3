@@ -10,8 +10,15 @@ form.addEventListener('submit', (event) => {
   if (name.value && cost.value) {
     const item = {
       name: name.value,
-      cost: cost.value
+      cost: parseInt(cost.value)
     }
+
+    db.collection('expenses').add(item).then(res => {
+      error.textContent = ''
+      name.value = ""
+      cost.value = ""
+    })
+
   } else {
     error.textContent = 'Please enter values before submitting'
   }
