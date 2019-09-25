@@ -24,8 +24,24 @@ const arcPath = d3.arc()
   .outerRadius(dims.radius)
   .innerRadius(dims.radius / 2)
 
-// data array and firestore
+// update function
+const update = data => {
 
+  // join enhanced (pie) data to path elements
+  const paths = graph.selectAll('path')
+    .data(pie(data))
+
+  console.log(paths.enter())
+
+  paths.enter()
+    .append('path')
+    .attr('class', 'arc')
+    .attr('d', arcPath)
+    .attr('stroke', '#fff')
+    .attr('stroke-width', 3)
+}
+
+// data array and firestore
 let data = []
 
 db.collection('expenses').onSnapshot(res => {
@@ -50,5 +66,7 @@ db.collection('expenses').onSnapshot(res => {
     }
 
   })
+
+  update(data)
 
 })
