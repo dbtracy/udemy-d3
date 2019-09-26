@@ -57,9 +57,6 @@ const update = data => {
 }
 
 
-
-
-
 // data array and firestore
 let data = []
 
@@ -93,7 +90,7 @@ db.collection('expenses').orderBy('cost').onSnapshot(res => {
 const arcTweenEnter = (d) => {
   let i = d3.interpolate(d.endAngle, d.startAngle)
 
-  return t => {
+  return function (t) {
     d.startAngle = i(t)
     return arcPath(d)
   }
@@ -102,8 +99,10 @@ const arcTweenEnter = (d) => {
 const arcTweenExit = (d) => {
   let i = d3.interpolate(d.startAngle, d.endAngle)
 
-  return t => {
+  return function (t) {
     d.startAngle = i(t)
     return arcPath(d)
   }
 }
+
+// use function keyword to allow use of 'this'
