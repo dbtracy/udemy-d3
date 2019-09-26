@@ -36,8 +36,6 @@ const update = data => {
   const paths = graph.selectAll('path')
     .data(pie(data))
 
-  console.log(paths)
-
   // handle exit selection
   paths.exit()
     .transition().duration(750)
