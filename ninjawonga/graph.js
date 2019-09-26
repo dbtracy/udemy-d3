@@ -30,14 +30,19 @@ const colour = d3.scaleOrdinal(d3['schemeSet3'])
 const update = data => {
 
   // update colour scale domain
-  colour.domain(data.map(item => item.name))
+  colour.domain(data.map(d => d.name))
 
   // join enhanced (pie) data to path elements
   const paths = graph.selectAll('path')
     .data(pie(data))
 
+  console.log(paths)
+
   // handle exit selection
-  paths.exit().remove()
+  paths.exit()
+    .transition().duration(750)
+    .attrTween('d', arcTweenExit)
+    .remove()
 
   // handle current DOM path update
   paths.attr('d', arcPath)
@@ -45,18 +50,22 @@ const update = data => {
   paths.enter()
     .append('path')
     .attr('class', 'arc')
-    .attr('d', arcPath)
     .attr('stroke', '#fff')
     .attr('stroke-width', 3)
     .attr('fill', d => colour(d.data.name))
+    .transition().duration(750)
+    .attrTween('d', arcTweenEnter)
+
 }
+
+
 
 
 
 // data array and firestore
 let data = []
 
-db.collection('expenses').onSnapshot(res => {
+db.collection('expenses').orderBy('cost').onSnapshot(res => {
 
   res.docChanges().forEach(change => {
 
@@ -71,7 +80,7 @@ db.collection('expenses').onSnapshot(res => {
         data[index] = doc
         break
       case 'removed':
-        data.filter(item => item.id !== doc.id)
+        data = data.filter(item => item.id !== doc.id)
         break
       default:
         break
@@ -82,3 +91,21 @@ db.collection('expenses').onSnapshot(res => {
   update(data)
 
 })
+
+const arcTweenEnter = (d) => {
+  let i = d3.interpolate(d.endAngle, d.startAngle)
+
+  return t => {
+    d.startAngle = i(t)
+    return arcPath(d)
+  }
+}
+
+const arcTweenExit = (d) => {
+  let i = d3.interpolate(d.startAngle, d.endAngle)
+
+  return t => {
+    d.startAngle = i(t)
+    return arcPath(d)
+  }
+}
