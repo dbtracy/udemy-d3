@@ -24,8 +24,13 @@ const arcPath = d3.arc()
   .outerRadius(dims.radius)
   .innerRadius(dims.radius / 2)
 
+const colour = d3.scaleOrdinal(d3['schemeSet3'])
+
 // update function
 const update = data => {
+
+  // update colour scale domain
+  colour.domain(data.map(item => item.name))
 
   // join enhanced (pie) data to path elements
   const paths = graph.selectAll('path')
