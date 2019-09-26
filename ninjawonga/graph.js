@@ -36,7 +36,11 @@ const update = data => {
   const paths = graph.selectAll('path')
     .data(pie(data))
 
-  console.log(paths.enter())
+  // handle exit selection
+  paths.exit().remove()
+
+  // handle current DOM path update
+  paths.attr('d', arcPath)
 
   paths.enter()
     .append('path')
@@ -46,6 +50,8 @@ const update = data => {
     .attr('stroke-width', 3)
     .attr('fill', d => colour(d.data.name))
 }
+
+
 
 // data array and firestore
 let data = []
