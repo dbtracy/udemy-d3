@@ -44,6 +44,7 @@ const update = data => {
     .attr('d', arcPath)
     .attr('stroke', '#fff')
     .attr('stroke-width', 3)
+    .attr('fill', d => colour(d.data.name))
 }
 
 // data array and firestore
