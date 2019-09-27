@@ -35,7 +35,18 @@ const legend = d3.legendColor()
   .shapePadding(10)
   .scale(colour)
 
-// update function
+// tip setup
+const tip = d3.tip()
+  .attr('class', 'tip card')
+  .html(d => {
+    return `<p>Hello there</p>`
+  })
+
+graph.call(tip)
+
+/*****************
+ * UPDATE FUNCTION
+ *****************/
 const update = data => {
 
   // update colour scale domain
@@ -72,8 +83,14 @@ const update = data => {
 
   // add events
   graph.selectAll('path')
-    .on('mouseover', handleMouseOver)
-    .on('mouseout', handleMouseOut)
+    .on('mouseover', (d, i, n) => {
+      tip.show(d, n[i])
+      handleMouseOver(d, i, n)
+    })
+    .on('mouseout', (d, i, n) => {
+      tip.hide()
+      handleMouseOut(d, i, n)
+    })
     .on('click', handleClick)
 }
 
