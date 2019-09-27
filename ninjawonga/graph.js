@@ -73,7 +73,7 @@ const update = data => {
   // add events
   graph.selectAll('path')
     .on('mouseover', handleMouseOver)
-
+    .on('mouseout', handleMouseOut)
 }
 
 
@@ -151,4 +151,10 @@ const handleMouseOver = (d, i, n) => {
   d3.select(n[i]) // selects element and wraps it in d3 wrapper
     .transition().duration(300)
     .attr('fill', '#fff')
+}
+
+const handleMouseOut = (d, i, n) => {
+  d3.select(n[i])
+    .transition().duration(300)
+    .attr('fill', colour(d.data.name))
 }
