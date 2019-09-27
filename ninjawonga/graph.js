@@ -147,3 +147,8 @@ function arcTweenUpdate(d) {
 * EVENT HANDLERS *
 ******************/
 
+const handleMouseOver = (d, i, n) => {
+  d3.select(n[i]) // selects element and wraps it in d3 wrapper
+    .transition().duration(300)
+    .attr('fill', '#fff')
+}
