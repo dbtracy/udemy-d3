@@ -70,6 +70,10 @@ const update = data => {
     .transition().duration(750)
     .attrTween('d', arcTweenEnter)
 
+  // add events
+  graph.selectAll('path')
+    .on('mouseover', handleMouseOver)
+
 }
 
 
@@ -103,6 +107,10 @@ db.collection('expenses').orderBy('cost').onSnapshot(res => {
 
 })
 
+/*****************
+    * TWEENS *
+******************/
+
 const arcTweenEnter = (d) => {
   let i = d3.interpolate(d.endAngle, d.startAngle)
 
@@ -134,3 +142,8 @@ function arcTweenUpdate(d) {
   }
 
 }
+
+/*****************
+* EVENT HANDLERS *
+******************/
+
